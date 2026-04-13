@@ -1,2 +1,6 @@
 # Useless_site
-A project for the global hackweek.
+Un projet pour le Global HackWeek
+
+Ce projet est un site web qui vous fais trouver le nom d'un pays avec sa population et sa capital en utilisant REST Countries
+
+Bonne Journée :)
