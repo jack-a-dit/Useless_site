@@ -1,0 +1,10 @@
+#map {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;   /* largeur écran */
+    height: 100vh;  /* hauteur écran */
+    z-index: -1;
+    pointer-events: none;
+}
+

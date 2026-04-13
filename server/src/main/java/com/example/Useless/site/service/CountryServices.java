@@ -51,7 +51,6 @@ public class CountryServices {
         // Parcours de la réponse et extraction des noms de pays
         for (JsonNode country : allCountries) {
             String countryName = country.get("name").get("common").asText();
-            System.out.println(countryName);
             names.add(countryName);
         }
         return names;
@@ -71,7 +70,7 @@ public class CountryServices {
         // Extraction des informations spécifiques du pays
         String capital = country.get("capital").get(0).asText();
         long population = country.get("population").asLong();
-        String map = country.get("maps").get("googleMaps").asText();
+        String map = country.get("maps").get("openStreetMaps").asText();
 
         // Retour d'un objet CountryModel avec les informations
         return new CountryModel(name, capital, population, map);
