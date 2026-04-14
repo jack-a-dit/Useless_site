@@ -17,22 +17,33 @@ export class Interface {
     guess: string = '';
     attemptsLeft: number = 3;
     isWrong: boolean = false;
+    gameStatus: string = "playing"
 
     ngOnChanges() {
       console.log("COUNTRY UPDATE:", this.country);
     }
 
+  retryGame() {
+    this.attemptsLeft = 3;
+    this.guess = '';
+    this.isWrong = false;
+    this.gameStatus = 'playing';
+
+    this.countryChecked.emit("reload");
+  }
+
     CheckCountry() {
       if (this.guess.toLowerCase() === this.country.name.toLowerCase()) {
-        alert('Correct! The country is ' + this.country.name);
+        this.gameStatus = "win";
         this.countryChecked.emit("true");
       } else {
         this.attemptsLeft--;
         this.isWrong = true;
       }
       if (this.attemptsLeft === 0) {
-        alert('Game Over! The correct answer was ' + this.country.name);
+        this.gameStatus = "lost";
         this.countryChecked.emit("false");
+        
       }
     }
 

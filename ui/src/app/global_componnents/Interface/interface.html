@@ -3,24 +3,30 @@
       🌍 Trouve le Pays
     </h1>
 
-    <p class="text-white/70 mb-6">
-      Voici une interface pour afficher les données des pays.
+    <p *ngIf="gameStatus === 'playing'" ngclass="text-white/70 mb-6">
+      Trouver le Pays avec ses Information. Le pays est en anglais
+    </p>
+    <p *ngIf="gameStatus === 'win'" class="text-white/70 mb-6">
+      Bravo! C'etait bien {{ country.name }}
+    </p>
+    <p *ngIf="gameStatus === 'lost'" class="text-white/70 mb-6">
+      Game Over! La bonne reponse etait {{ country.name }}
     </p>
 
     <div class="space-y-4 text-left">
 
       <div class="flex justify-between bg-white/10 p-3 rounded-lg">
-        <span class="text-white/60">🏛️ Capitale</span>
+        <span class="text-white/60">🏛️ Capitale: </span>
         <span class="font-semibold">{{ country.capital }}</span>
       </div>
 
       <div class="flex justify-between bg-white/10 p-3 rounded-lg">
-        <span class="text-white/60">👥 Population</span>
+        <span class="text-white/60">👥 Population: </span>
         <span class="font-semibold">{{ country.population }}</span>
       </div>
 
-      <div class="flex justify-between bg-white/10 p-3 rounded-lg">
-        <span class="text-white/60">Pays</span>
+      <div *ngIf="gameStatus === 'lost' || gameStatus === 'win'" class="flex justify-between bg-white/10 p-3 rounded-lg">
+        <span class="text-white/60">Pays: </span>
         <span class="font-semibold">{{ country.name }}</span>
       </div>
 
@@ -31,11 +37,12 @@
 
     <!-- INPUT -->
     <input
+      *ngIf="gameStatus === 'playing'"
       type="text"
       [(ngModel)]="guess"
       (keyup.enter)="CheckCountry()"
       [ngClass]="{
-        'border-red-500 focus:ring-red-500': isWrong,
+        'border-red-500 focus:ring-red-500 animate-shake': isWrong,
         'border-white/20': !isWrong
       }"
       class="w-full bg-white/10 text-white border rounded-lg px-4 py-3 pr-16
@@ -44,10 +51,15 @@
     />
 
     <!-- compteur à droite -->
-    <div class="absolute right-3 top-1/2 -translate-y-1/2 
+    <div *ngIf="gameStatus === 'playing'" class="absolute right-3 top-1/2 -translate-y-1/2 
                 text-white/70 font-bold">
       {{ attemptsLeft }}
     </div>
+    <button *ngIf="gameStatus === 'lost' || gameStatus === 'win'"
+      (click)="retryGame()"
+      class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg">
+      Réessayer
+    </button>
 
   </div>
 

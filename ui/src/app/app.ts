@@ -9,7 +9,7 @@ import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Interface, JsonPipe],
+  imports: [RouterOutlet, Interface],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -41,37 +41,33 @@ export class App {
 
   checkCountry(data: string): void {
     if (data) {
-      console.log("guess received in parent component.");
       this.updateMap();
+      if (data === "reload") {
+        this.map.flyTo([48.8566, 2.3522], 5);
+        this.loadCountryData();
+      }
     }
     console.log("checkCountry called with data:", data);
-  }
-
-  private getRelationIdFromCountryMapUrl(mapUrl: string): string | null {
-    const match = mapUrl.match(/\/relation\/(\d+)/);
-    return match ? match[1] : null;
   }
 
   private loadCountryData(): void {
     this.http.get<any>('http://localhost:8080/api/country/random_country')
   .subscribe((data: any) => {
-    console.log("Données reçues du backend :", data);
     this.country = { ...data };
     this.country = { ...this.country };
     this.cdr.detectChanges();
-    console.log("Country data updated in component:", this.country);
   });
   }
 
   private updateMap(): void {
-//    if (this.country.map) {
-//       this.urlMap = 'https://api.openstreetmap.org/api/0.6/relation/' + this.getRelationIdFromCountryMapUrl(this.country.map) + '.json';
-//      this.http.get(this.urlMap).subscribe((geojson: any) => {
-//        L.geoJSON(geojson).addTo(this.map);
-//      });
-//    } else {
-//      console.error('No map URL provided for the country.');
-//    }
+    const lat = this.country.map.latitude;
+    const lng = this.country.map.longitude;
+
+    if (this.country.map) {
+      this.map.flyTo([lat, lng], 5);
+    } else {
+      console.error('No map URL provided for the country.');
+    }
   }
 
   private initMap(): void {
