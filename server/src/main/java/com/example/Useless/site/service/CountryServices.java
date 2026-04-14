@@ -9,8 +9,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.Useless.site.client.CountryClient;
+import com.example.Useless.site.model.CoordinateModel;
 import com.example.Useless.site.model.CountryModel;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Service métier pour la gestion des informations sur les pays
@@ -26,6 +28,8 @@ public class CountryServices {
     // Client REST utilisé pour communiquer avec l'API Countries
     @Autowired
     private CountryClient countryClient;
+
+    private final ObjectMapper mapper = new ObjectMapper();
 
     // Constructeur alternatif avec RestTemplate
     public CountryServices(RestTemplate restTemplate) {
@@ -56,6 +60,11 @@ public class CountryServices {
         return names;
     }
 
+
+    private CoordinateModel SetCoordinateModel(String url, double[] coord) throws Exception {    
+        return new CoordinateModel(url, coord[0], coord[1]);
+    }
+
     /**
      * Récupère les détails complètes d'un pays par son nom
      * 
@@ -70,8 +79,9 @@ public class CountryServices {
         // Extraction des informations spécifiques du pays
         String capital = country.get("capital").get(0).asText();
         long population = country.get("population").asLong();
-        String map = country.get("maps").get("openStreetMaps").asText();
-
+        JsonNode arrayNode = country.get("latlng");
+        CoordinateModel map = SetCoordinateModel(country.get("maps").get("openStreetMaps").asText(), mapper.treeToValue(arrayNode, double[].class));
+        //
         // Retour d'un objet CountryModel avec les informations
         return new CountryModel(name, capital, population, map);
     }

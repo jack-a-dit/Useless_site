@@ -1,5 +1,7 @@
 package com.example.Useless.site.model;
 
+import com.example.Useless.site.model.CoordinateModel;
+
 /**
  * Modèle de données représentant un pays
  * 
@@ -20,7 +22,7 @@ public class CountryModel {
     long population;
     
     // URL Google Maps du pays
-    String map;
+    CoordinateModel map;
 
     /**
      * Constructeur pour initialiser un objet CountryModel
@@ -29,7 +31,7 @@ public class CountryModel {
      * @param population Population du pays
      * @param map URL Google Maps
      */
-    public CountryModel(String name, String capital, long population, String map) {
+    public CountryModel(String name, String capital, long population, CoordinateModel map) {
         this.name = name;
         this.capital = capital;
         this.population = population;
@@ -88,7 +90,7 @@ public class CountryModel {
      * Retourne le lien Google Maps
      * @return L'URL Google Maps
      */
-    public String getMap() {
+    public CoordinateModel getMap() {
         return map;
     }
 
@@ -96,7 +98,7 @@ public class CountryModel {
      * Définit le lien Google Maps
      * @param map L'URL Google Maps à définir
      */
-    public void setMap(String map) {
+    public void setMap(CoordinateModel map) {
         this.map = map;
     }
 

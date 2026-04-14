@@ -2,11 +2,11 @@ export interface CountryModel {
     name: string;
     capital: string;
     population: number;
-    map: string;
+    map: CountryToMap;
 }
 
 export interface CountryToMap {
-    name: string;
+    url: string;
     latitude: number;
     longitude: number;
 }
