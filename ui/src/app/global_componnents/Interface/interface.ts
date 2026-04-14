@@ -6,22 +6,21 @@ import { CountryModel } from '../../models/countryModel';
 
 @Component({
   selector: 'app-interface',
-  imports: [RouterOutlet, CommonModule, FormsModule],
+  imports: [ CommonModule, FormsModule ],
   templateUrl: './interface.html',
   styleUrls: ['./interface.css']
 })
 
 export class Interface {
-    @Input() country: CountryModel = {
-      name: '',
-      capital: '',
-      population: 0,
-      map: ''
-    }
+    @Input() country!: CountryModel;
     @Output() countryChecked = new EventEmitter<string>();
     guess: string = '';
     attemptsLeft: number = 3;
     isWrong: boolean = false;
+
+    ngOnChanges() {
+      console.log("COUNTRY UPDATE:", this.country);
+    }
 
     CheckCountry() {
       if (this.guess.toLowerCase() === this.country.name.toLowerCase()) {

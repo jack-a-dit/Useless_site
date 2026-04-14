@@ -4,17 +4,20 @@ import { Interface } from './global_componnents/Interface/interface';
 import * as L from 'leaflet';
 import { CountryModel } from './models/countryModel';
 import { HttpClient} from '@angular/common/http';
+import { JsonPipe } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Interface],
+  imports: [RouterOutlet, Interface, JsonPipe],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
   protected readonly title = signal('ui');
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
+
   private map!: L.Map;
   public country: CountryModel = {
     name: '',
@@ -23,15 +26,17 @@ export class App {
     map: ''
   };
 
+  ngOnInit(): void {
+    this.loadCountryData();
+  }
 
   ngAfterViewInit(): void {
-    this.loadCountryData();
     this.initMap();
-
   }
 
   checkCountry(data: string): void {
     if (data) {
+      console.log("guess received in parent component.");
       this.updateMap();
     }
   }
@@ -39,7 +44,11 @@ export class App {
   private loadCountryData(): void {
     this.http.get<any>('http://localhost:8080/api/country/random_country')
   .subscribe((data: any) => {
-    this.country = data;
+    console.log("Données reçues du backend :", data);
+    this.country = { ...data };
+    this.country = { ...this.country };
+    this.cdr.detectChanges();
+    console.log("Country data updated in component:", this.country);
   });
   }
 
