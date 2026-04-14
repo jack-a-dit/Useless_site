@@ -37,7 +37,7 @@ export class App {
   }
 
   private loadCountryData(): void {
-    this.http.get<any>('http://localhost:8080/api/countries/random')
+    this.http.get<any>('http://localhost:8080/api/country/random_country')
   .subscribe((data: any) => {
     this.country = data;
   });
