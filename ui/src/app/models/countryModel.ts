@@ -4,3 +4,9 @@ export interface CountryModel {
     population: number;
     map: string;
 }
+
+export interface CountryToMap {
+    name: string;
+    latitude: number;
+    longitude: number;
+}
