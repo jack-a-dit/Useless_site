@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, Input } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Interface } from './global_componnents/Interface/interface';
 import * as L from 'leaflet';
@@ -7,7 +7,7 @@ import { HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HttpClient, Interface],
+  imports: [RouterOutlet, Interface],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -16,7 +16,7 @@ export class App {
 
   constructor(private http: HttpClient) {}
   private map!: L.Map;
-  private country: CountryModel = {
+  public country: CountryModel = {
     name: '',
     capital: '',
     population: 0,
@@ -28,6 +28,12 @@ export class App {
     this.loadCountryData();
     this.initMap();
 
+  }
+
+  checkCountry(data: string): void {
+    if (data) {
+      this.updateMap();
+    }
   }
 
   private loadCountryData(): void {

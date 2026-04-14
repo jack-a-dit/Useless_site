@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, Input, Output, EventEmitter } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
@@ -12,18 +12,29 @@ import { CountryModel } from '../../models/countryModel';
 })
 
 export class Interface {
-    country: CountryModel = {
+    @Input() country: CountryModel = {
       name: '',
       capital: '',
       population: 0,
       map: ''
     }
+    @Output() countryChecked = new EventEmitter<string>();
     guess: string = '';
     attemptsLeft: number = 3;
     isWrong: boolean = false;
 
     CheckCountry() {
-        // Implementation for checking the country
+      if (this.guess.toLowerCase() === this.country.name.toLowerCase()) {
+        alert('Correct! The country is ' + this.country.name);
+        this.countryChecked.emit("true");
+      } else {
+        this.attemptsLeft--;
+        this.isWrong = true;
+      }
+      if (this.attemptsLeft === 0) {
+        alert('Game Over! The correct answer was ' + this.country.name);
+        this.countryChecked.emit("false");
+      }
     }
 
 }
